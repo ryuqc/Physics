@@ -1,8 +1,7 @@
 package org.physics.world;
 
 import org.physics.library.collision.shapes.Ball;
-import org.physics.library.dynamics.Position;
-import org.physics.library.dynamics.Velocity;
+import org.physics.library.common.Vec2;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,12 +11,15 @@ public class DrawingCanvas extends JComponent {
     int width, height;
     Ball ball;
     FpsCounter fps;
+    double dt;
 
     public DrawingCanvas(int w, int h) {
         width = w;
         height = h;
 
-        ball = new Ball(25, 25, new Position(0,0), new Velocity(75, 75));
+        dt = 0.0;
+
+        ball = new Ball(25, 25, new Vec2(0.0,0.0), new Vec2(200, 40));
         fps = new FpsCounter();
         setDimension();
     }
@@ -58,10 +60,18 @@ public class DrawingCanvas extends JComponent {
     }
 
     private void updatePosition() {
-        ball.updatePosition();
+
+        ball.updatePosition(dt);
+
     }
 
     private void setDimension() {
-        this.setPreferredSize(new Dimension(width, height));
+        setPreferredSize(new Dimension(width, height));
     }
+
+    public void setDeltaTime(double dt) {
+
+        this.dt = dt;
+    }
+
 }

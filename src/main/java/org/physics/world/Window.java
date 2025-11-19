@@ -1,18 +1,23 @@
 package org.physics.world;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Window {
     JFrame frame;
 
-    public Window(DrawingCanvas dc) {
+    public Window(DrawingCanvas dc, JPanel sideBar) {
 
         // Set up frame
         frame = new JFrame("Test");
         frame.setUndecorated(false);
 
+        // Frame Layout
+        frame.setLayout(new BorderLayout());
+
         // add components
-        frame.add(dc);
+        frame.add(dc, BorderLayout.CENTER);
+        frame.add(sideBar, BorderLayout.EAST);
 
         //resize and then display the frame
         frame.pack();

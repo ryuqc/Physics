@@ -18,4 +18,8 @@ public class FpsCounter {
             frames = 0;
         }
     }
+
+    public int getFPS() {
+        return frames;
+    }
 }
