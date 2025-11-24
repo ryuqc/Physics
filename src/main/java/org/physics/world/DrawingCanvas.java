@@ -1,17 +1,24 @@
 package org.physics.world;
 
+import org.physics.library.collision.AABB;
+import org.physics.library.collision.Broadphase;
 import org.physics.library.collision.shapes.Ball;
-import org.physics.library.common.Vec2;
+import org.physics.library.pooling.BallPool;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.*;
+import java.util.ArrayList;
 
 public class DrawingCanvas extends JComponent {
     int width, height;
     Ball ball;
     FpsCounter fps;
     double dt;
+    BallPool array = new BallPool();;
+    public ArrayList<Ball> pool = array.getPool();
+
+    Broadphase broadphase = new Broadphase(pool);
 
     public DrawingCanvas(int w, int h) {
         width = w;
@@ -19,7 +26,6 @@ public class DrawingCanvas extends JComponent {
 
         dt = 0.0;
 
-        ball = new Ball(25, 25, new Vec2(0.0,0.0), new Vec2(200, 40));
         fps = new FpsCounter();
         setDimension();
     }
@@ -33,21 +39,44 @@ public class DrawingCanvas extends JComponent {
         moveToOrgin(g2d);
 
         g2d.setColor(Color.red);
-        g2d.fill(createBall());
+
+
+        broadphase.clearList();
+        if(pool.isEmpty()) {}
+        else {
+            for(int i = 0; i < pool.size(); i++) {
+                Ball ball = pool.get(i);
+                g2d.fill(new Ellipse2D.Double(
+                        ball.pos.x,
+                        ball.pos.y,
+                        ball.diameter,
+                        ball.height));
+
+                //Draw AABB
+                g2d.setColor(new Color(0, 0, 255, 100));
+                AABB aabb = ball.getAABB();
+                g2d.drawRect(
+                        (int)aabb.minX,
+                        (int)aabb.minY,
+                        (int)(aabb.maxX - aabb.minX),
+                        (int)(aabb.maxY - aabb.minY)
+                );
+                g2d.setColor(Color.red);
+            }
+        }
 
         updatePosition();
+        broadphase.init();
 
-        //System.out.println("Ball POS: " + ball.pos.x + ", " + ball.pos.y);
         fps.runFpsCounter();
     }
 
     private RenderingHints createRenderingHints() {
-        RenderingHints rh = new RenderingHints(
+
+        return new RenderingHints(
                 RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON
         );
-
-        return rh;
     }
 
     private void moveToOrgin(Graphics2D g2d) {
@@ -55,14 +84,12 @@ public class DrawingCanvas extends JComponent {
         g2d.scale(1, -1);
     }
 
-    public Ellipse2D createBall() {
-        return new Ellipse2D.Double(ball.pos.x, ball.pos.y, ball.diameter, ball.height);
-    }
 
     private void updatePosition() {
 
-        ball.updatePosition(dt);
-
+        for(int i = 0; i < pool.size(); i++) {
+            pool.get(i).updatePosition(dt);
+        }
     }
 
     private void setDimension() {
