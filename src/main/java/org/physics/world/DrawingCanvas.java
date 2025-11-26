@@ -2,12 +2,14 @@ package org.physics.world;
 
 import org.physics.library.collision.AABB;
 import org.physics.library.collision.Broadphase;
+import org.physics.library.collision.Collision;
 import org.physics.library.collision.shapes.Ball;
 import org.physics.library.pooling.BallPool;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.*;
+import java.net.CookieHandler;
 import java.util.ArrayList;
 
 public class DrawingCanvas extends JComponent {
@@ -18,7 +20,7 @@ public class DrawingCanvas extends JComponent {
     BallPool array = new BallPool();;
     public ArrayList<Ball> pool = array.getPool();
 
-    Broadphase broadphase = new Broadphase(pool);
+    Collision collision = new Collision(pool);
 
     public DrawingCanvas(int w, int h) {
         width = w;
@@ -38,14 +40,11 @@ public class DrawingCanvas extends JComponent {
         g2d.setRenderingHints(createRenderingHints());
         moveToOrgin(g2d);
 
-        g2d.setColor(Color.red);
-
-
-        broadphase.clearList();
         if(pool.isEmpty()) {}
         else {
             for(int i = 0; i < pool.size(); i++) {
                 Ball ball = pool.get(i);
+                g2d.setColor(ball.getColor());
                 g2d.fill(new Ellipse2D.Double(
                         ball.pos.x,
                         ball.pos.y,
@@ -56,6 +55,7 @@ public class DrawingCanvas extends JComponent {
                 g2d.setColor(new Color(0, 0, 255, 100));
                 AABB aabb = ball.getAABB();
                 g2d.drawRect(
+
                         (int)aabb.minX,
                         (int)aabb.minY,
                         (int)(aabb.maxX - aabb.minX),
@@ -66,7 +66,8 @@ public class DrawingCanvas extends JComponent {
         }
 
         updatePosition();
-        broadphase.init();
+        collision.startBroadphase();
+        collision.updateBallComponents();
 
         fps.runFpsCounter();
     }

@@ -17,9 +17,7 @@ public class AABB {
 
     public static boolean overlapsAABB(AABB a, AABB b) {
         return (a.maxX >= b.minX &&
-                b.maxX >= a.minX &&
-                a.maxY >= b.minY &&
-                b.maxY >= a.minY);
+                b.maxX >= a.minX);
     }
 
     public void setTo(double x, double y, double width, double height) {

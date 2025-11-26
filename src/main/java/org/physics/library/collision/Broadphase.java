@@ -22,43 +22,49 @@ public class Broadphase {
     }
 
     private void initOrderedList() {
-        if(pool != null) {
-            for(int i = 0; i < pool.size(); i++) {
-                Ball ball = pool.get(i);
-                Ball ballWithSmallerX = ball;
-
-                for(int j = i + 1; j < pool.size() - 1; j ++) {
-                    ballWithSmallerX = ball.smallerX(pool.get(j));
-                }
-                orderedList.add(ballWithSmallerX);
-            }
-        }
-    }
-
-    private void initActiveList() {
-        for(int i = 0; i < orderedList.size() - 1; i++) {
-            ArrayList<Ball> temp = new ArrayList<>();
-            Ball b = orderedList.get(i);
-
-            Ball nextB = orderedList.get(i + 1);
-
-            temp.add(b);
-
-            if(AABB.overlapsAABB(b.getAABB(), nextB.getAABB())) {
-                temp.add(nextB);
-            }
-            else {
-                if(temp.size() > 1) {
-                    activeList.add(temp);
-                }
-
-                temp = null;
-            }
-        }
-    }
-
-    public void clearList() {
         orderedList.clear();
-        activeList.clear();
+
+        ArrayList<Ball> tempPool = new ArrayList<>(pool);
+        while(!tempPool.isEmpty()) {
+            Ball min = tempPool.get(0);
+            for (int i = 1; i < tempPool.size(); i++) {
+                if (tempPool.get(i).pos.x < min.pos.x) {
+                    min = tempPool.get(i);
+                }
+            }
+            orderedList.add(min);
+            tempPool.remove(min);
+        }
     }
+
+    //broken
+    private void initActiveList() {
+        activeList.clear();
+        for (int i = 0; i < orderedList.size(); i++) {
+            Ball a = orderedList.get(i);
+            ArrayList<Ball> group = new ArrayList<>();
+            group.add(a);
+
+            for (int j = i + 1; j < orderedList.size(); j++) {
+
+                Ball b = orderedList.get(j);
+                if (b.getAABB().minX > a.getAABB().maxX) {
+                    break;
+                }
+                if (AABB.overlapsAABB(a.getAABB(), b.getAABB())) {
+                    group.add(b);
+                }
+            }
+
+            if (group.size() > 1) {
+                activeList.add(group);
+            }
+        }
+    }
+
+    public ArrayList<ArrayList<Ball>> getActiveList() {
+        return activeList;
+    }
+
 }
+

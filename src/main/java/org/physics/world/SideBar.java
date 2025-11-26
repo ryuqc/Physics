@@ -8,19 +8,21 @@ import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 public class SideBar extends JPanel implements ActionListener {
     int width, height;
-    public JButton pauseButton, addBall;
+    public JButton pauseButton, addBall, showHitbox;
+    Random random;
+
 
     DrawingCanvas dc;
 
     public SideBar(int w, int h, DrawingCanvas dc) {
         width = w;
         height = h;
-
+        random = new Random();
         this.dc = dc;
-
         initComponents();
     }
 
@@ -56,9 +58,13 @@ public class SideBar extends JPanel implements ActionListener {
         addBall.setActionCommand("Add Ball");
         addBall.addActionListener(this);
 
+        showHitbox = new JButton("Show");
+        showHitbox.setActionCommand("Show");
+        showHitbox.addActionListener(this);
 
         bottom.add(pauseButton);
         bottom.add(addBall);
+        bottom.add(showHitbox);
         add(bottom, "South");
     }
 
@@ -84,8 +90,7 @@ public class SideBar extends JPanel implements ActionListener {
             pauseButton.setActionCommand("Resume");
             pauseButton.setText("Resume");
         }
-
-        if(eventName.equals("Resume")) {
+        else if(eventName.equals("Resume")) {
             World.timeAtResume = System.nanoTime();
             World.paused = false;
 
@@ -93,8 +98,24 @@ public class SideBar extends JPanel implements ActionListener {
             pauseButton.setActionCommand("Pause");
             pauseButton.setText("Pause");
         }
+
         if(eventName.equals("Add Ball")) {
-            dc.pool.add(new Ball(25, 25, new Vec2(0.0,0.0), new Vec2(250, 40)));
+            int size = (int)(Math.random() * 26) + 25;
+            int posX = (int)(Math.random() * (dc.width -  size));
+            int posY = (int)(Math.random() * (dc.height -  size));
+
+            Color color = new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256));
+
+            dc.pool.add(new Ball(size, size, new Vec2(posX,posY), new Vec2(250, 40), color));
+        }
+
+        if(eventName.equals("Show")) {
+            showHitbox.setActionCommand("Hide");
+            showHitbox.setText("Hide");
+        }
+        else if(eventName.equals("Hide")) {
+            showHitbox.setActionCommand("Show");
+            showHitbox.setText("Show");
         }
     }
 

@@ -65,10 +65,9 @@ public class World implements Runnable {
 
             if(temp) {
                 temp = false;
-
-                System.out.println("Ordered List: " + dc.broadphase.orderedList);
-                System.out.println("Active List: " + dc.broadphase.activeList);
-
+                System.out.println("Ordered List: " + dc.collision.getBroadphase().orderedList);
+                System.out.println("Active List: " + dc.collision.getBroadphase().activeList);
+                System.out.println("Touching List: " + dc.collision.getTouchingList());
             }
 
             try {
