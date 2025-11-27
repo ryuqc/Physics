@@ -1,3 +1,7 @@
+/*
+    Vector Class
+ */
+
 package org.physics.library.common;
 
 public class Vec2 {
@@ -23,9 +27,9 @@ public class Vec2 {
         return new Vec2(x, y);
     }
 
-    public Vec2 add(Vec2 v, double s) {
-        x += v.x * s;
-        y += v.y * s;
+    public Vec2 add(Vec2 v, double scale) {
+        x += v.x * scale;
+        y += v.y * scale;
         return this;
     }
 
@@ -36,9 +40,9 @@ public class Vec2 {
         return this;
     }
 
-    public Vec2 subtract(Vec2 v, double s) {
-        x -= v.x * s;
-        y -= v.y * s;
+    public Vec2 subtract(Vec2 v, double scale) {
+        x -= v.x * scale;
+        y -= v.y * scale;
 
         return this;
     }
@@ -61,5 +65,4 @@ public class Vec2 {
     public double dot(Vec2 v) {
         return x * v.x + y * v.y;
     }
-
 }

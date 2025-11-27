@@ -1,11 +1,12 @@
+/*
+    Implementation of Sweet and Prune.
+ */
+
 package org.physics.library.collision;
 
 import org.physics.library.collision.shapes.Ball;
-import org.physics.world.DrawingCanvas;
-
 import java.util.*;
 
-//Sweet and Prune method
 public class Broadphase {
     public ArrayList<ArrayList<Ball>> activeList = new ArrayList<>();
     public ArrayList<Ball> orderedList = new ArrayList<>();
@@ -21,6 +22,9 @@ public class Broadphase {
         initActiveList();
     }
 
+    /*
+        Sorts balls from left to right.
+     */
     private void initOrderedList() {
         orderedList.clear();
 
@@ -37,9 +41,12 @@ public class Broadphase {
         }
     }
 
-    //maybe broken
+    /*
+        Checks for potential colliding objects.
+     */
     private void initActiveList() {
         activeList.clear();
+
         for (int i = 0; i < orderedList.size(); i++) {
             Ball a = orderedList.get(i);
             ArrayList<Ball> group = new ArrayList<>();
@@ -65,6 +72,5 @@ public class Broadphase {
     public ArrayList<ArrayList<Ball>> getActiveList() {
         return activeList;
     }
-
 }
 

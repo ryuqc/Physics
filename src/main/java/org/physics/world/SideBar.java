@@ -2,7 +2,6 @@ package org.physics.world;
 
 import org.physics.library.collision.shapes.Ball;
 import org.physics.library.common.Vec2;
-
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
@@ -12,10 +11,9 @@ import java.util.Random;
 
 public class SideBar extends JPanel implements ActionListener {
     int width, height;
+
     public JButton pauseButton, addBall, showHitbox;
     Random random;
-
-
     DrawingCanvas dc;
 
     public SideBar(int w, int h, DrawingCanvas dc) {
@@ -77,6 +75,9 @@ public class SideBar extends JPanel implements ActionListener {
         setBackground(Color.LIGHT_GRAY);
     }
 
+    /*
+        Event Handler.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         String eventName = e.getActionCommand();
@@ -120,8 +121,4 @@ public class SideBar extends JPanel implements ActionListener {
             showHitbox.setText("Show AABB");
         }
     }
-
-
-
-
 }

@@ -1,8 +1,9 @@
+/*
+    Hitbox Class
+ */
+
 package org.physics.library.collision;
 
-import org.physics.library.common.Vec2;
-
-//AABB aka Hitbox
 public class AABB {
     public double minX, maxX;
     public double minY, maxY;
@@ -13,7 +14,6 @@ public class AABB {
         this.minY = minY;
         this.maxY = maxY;
     }
-
 
     public static boolean overlapsAABB(AABB a, AABB b) {
         return (a.maxX >= b.minX &&
@@ -26,5 +26,4 @@ public class AABB {
         minY = y;
         maxY = y + height;
     }
-
 }

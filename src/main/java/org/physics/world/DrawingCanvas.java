@@ -1,7 +1,6 @@
 package org.physics.world;
 
 import org.physics.library.collision.AABB;
-import org.physics.library.collision.Broadphase;
 import org.physics.library.collision.Collision;
 import org.physics.library.collision.shapes.Ball;
 import org.physics.library.pooling.BallPool;
@@ -9,25 +8,23 @@ import org.physics.library.pooling.BallPool;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.*;
-import java.net.CookieHandler;
 import java.util.ArrayList;
 
 public class DrawingCanvas extends JComponent {
+
     int width, height;
-    Ball ball;
     FpsCounter fps;
     double dt;
-    BallPool array = new BallPool();;
-    public ArrayList<Ball> pool = array.getPool();
     public static boolean showAABB = false;
 
+    BallPool array = new BallPool();
+    public ArrayList<Ball> pool = array.getPool();
     Collision collision = new Collision(pool);
 
     public DrawingCanvas(int w, int h) {
+
         width = w;
         height = h;
-
-        dt = 0.0;
 
         fps = new FpsCounter();
         setDimension();
@@ -45,23 +42,9 @@ public class DrawingCanvas extends JComponent {
         else {
             for(int i = 0; i < pool.size(); i++) {
                 Ball ball = pool.get(i);
-                g2d.setColor(ball.getColor());
-                g2d.fill(new Ellipse2D.Double(
-                        ball.pos.x,
-                        ball.pos.y,
-                        ball.diameter,
-                        ball.height));
-
+                drawBall(g2d, ball);
                 if(showAABB) {
-                    //Draw AABB
-                    g2d.setColor(new Color(0, 0, 255, 100));
-                    AABB aabb = ball.getAABB();
-                    g2d.drawRect(
-                            (int)aabb.minX,
-                            (int)aabb.minY,
-                            (int)(aabb.maxX - aabb.minX),
-                            (int)(aabb.maxY - aabb.minY)
-                    );
+                    drawAABB(g2d, ball);
                 }
             }
         }
@@ -69,12 +52,29 @@ public class DrawingCanvas extends JComponent {
         updatePosition();
         collision.startBroadphase();
         collision.updateBallComponents();
-
         fps.runFpsCounter();
     }
 
-    private RenderingHints createRenderingHints() {
+    private void drawBall(Graphics2D g2d, Ball ball) {
+        g2d.setColor(ball.getColor());
+        g2d.fill(new Ellipse2D.Double(
+                ball.pos.x,
+                ball.pos.y,
+                ball.diameter,
+                ball.height));
+    }
+    private void drawAABB(Graphics2D g2d, Ball ball) {
+        g2d.setColor(new Color(0, 0, 255, 100));
+        AABB aabb = ball.getAABB();
+        g2d.drawRect(
+                (int)aabb.minX,
+                (int)aabb.minY,
+                (int)(aabb.maxX - aabb.minX),
+                (int)(aabb.maxY - aabb.minY)
+        );
+    }
 
+    private RenderingHints createRenderingHints() {
         return new RenderingHints(
                 RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON
@@ -86,9 +86,7 @@ public class DrawingCanvas extends JComponent {
         g2d.scale(1, -1);
     }
 
-
     private void updatePosition() {
-
         for(int i = 0; i < pool.size(); i++) {
             pool.get(i).updatePosition(dt);
         }
@@ -102,5 +100,4 @@ public class DrawingCanvas extends JComponent {
 
         this.dt = dt;
     }
-
 }

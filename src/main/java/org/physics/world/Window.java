@@ -15,16 +15,16 @@ public class Window {
         // Frame Layout
         frame.setLayout(new BorderLayout());
 
-        // add components
+        // Add components
         frame.add(dc, BorderLayout.CENTER);
         frame.add(sideBar, BorderLayout.EAST);
 
-        //resize and then display the frame
+        // Resize then display frame
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        System.out.println("Frame size: " + frame.getSize());
-        System.out.println("Canvas size: " + dc.getSize());
+//        System.out.println("Frame size: " + frame.getSize());
+//        System.out.println("Canvas size: " + dc.getSize());
     }
 }

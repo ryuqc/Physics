@@ -1,13 +1,17 @@
+/*
+    Ball Class
+ */
+
 package org.physics.library.collision.shapes;
 
 import org.physics.library.collision.AABB;
-import org.physics.library.collision.Broadphase;
 import org.physics.library.common.Vec2;
 import org.physics.world.World;
 
 import java.awt.*;
 
 public class Ball {
+
     public double diameter;
     public double height;
     public Vec2 pos;
@@ -32,9 +36,13 @@ public class Ball {
         gravity = new Vec2(0, 0);
 
         ballID = id;
-
     }
 
+    /*
+        Implements Kinematic Equations:
+            v = a * t
+            x = v * t
+     */
     public void updatePosition(double dt) {
         velocity.x += gravity.x * dt;
         velocity.y += gravity.y * dt;
@@ -44,21 +52,21 @@ public class Ball {
 
         aabb.setTo(pos.x, pos.y, diameter, height);
 
+        /*
+            Handles Border Collision.
+         */
         if(pos.x + diameter >= World.width) {
             velocity.x *= -1;
             pos.x = World.width - diameter;
         }
-
         if(pos.x < 0) {
             velocity.x *= -1;
             pos.x = 0;
         }
-
         if(pos.y < 0) {
             velocity.y *= -1;
             pos.y = 0;
         }
-
         if(pos.y + diameter >= World.height) {
             velocity.y *= -1;
             pos.y = World.height - diameter;
@@ -67,10 +75,6 @@ public class Ball {
 
     public Color getColor() {
         return color;
-    }
-
-    public double getX() {
-        return pos.x;
     }
 
     public Vec2 getCenter() {
@@ -84,14 +88,6 @@ public class Ball {
         return diameter/2;
     }
 
-    public Ball smallerX(Ball b) {
-        if(pos.x < b.pos.x) {
-            return this;
-        }
-
-        return b;
-    }
-
     public AABB getAABB() {
         return aabb;
     }
@@ -99,5 +95,4 @@ public class Ball {
     public String toString() {
         return "Ball " + ballID;
     }
-
 }
