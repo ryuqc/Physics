@@ -58,7 +58,7 @@ public class SideBar extends JPanel implements ActionListener {
         addBall.setActionCommand("Add Ball");
         addBall.addActionListener(this);
 
-        showHitbox = new JButton("Show");
+        showHitbox = new JButton("Show AABB");
         showHitbox.setActionCommand("Show");
         showHitbox.addActionListener(this);
 
@@ -110,12 +110,14 @@ public class SideBar extends JPanel implements ActionListener {
         }
 
         if(eventName.equals("Show")) {
+            DrawingCanvas.showAABB = true;
             showHitbox.setActionCommand("Hide");
             showHitbox.setText("Hide");
         }
         else if(eventName.equals("Hide")) {
+            DrawingCanvas.showAABB = false;
             showHitbox.setActionCommand("Show");
-            showHitbox.setText("Show");
+            showHitbox.setText("Show AABB");
         }
     }
 

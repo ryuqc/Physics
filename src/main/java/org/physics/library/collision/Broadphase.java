@@ -37,7 +37,7 @@ public class Broadphase {
         }
     }
 
-    //broken
+    //maybe broken
     private void initActiveList() {
         activeList.clear();
         for (int i = 0; i < orderedList.size(); i++) {

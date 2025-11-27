@@ -19,6 +19,7 @@ public class DrawingCanvas extends JComponent {
     double dt;
     BallPool array = new BallPool();;
     public ArrayList<Ball> pool = array.getPool();
+    public static boolean showAABB = false;
 
     Collision collision = new Collision(pool);
 
@@ -51,17 +52,17 @@ public class DrawingCanvas extends JComponent {
                         ball.diameter,
                         ball.height));
 
-                //Draw AABB
-                g2d.setColor(new Color(0, 0, 255, 100));
-                AABB aabb = ball.getAABB();
-                g2d.drawRect(
-
-                        (int)aabb.minX,
-                        (int)aabb.minY,
-                        (int)(aabb.maxX - aabb.minX),
-                        (int)(aabb.maxY - aabb.minY)
-                );
-                g2d.setColor(Color.red);
+                if(showAABB) {
+                    //Draw AABB
+                    g2d.setColor(new Color(0, 0, 255, 100));
+                    AABB aabb = ball.getAABB();
+                    g2d.drawRect(
+                            (int)aabb.minX,
+                            (int)aabb.minY,
+                            (int)(aabb.maxX - aabb.minX),
+                            (int)(aabb.maxY - aabb.minY)
+                    );
+                }
             }
         }
 

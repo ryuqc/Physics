@@ -12,6 +12,7 @@ public class Ball {
     public double height;
     public Vec2 pos;
     public Vec2 velocity;
+    public double mass;
     Vec2 gravity;
     AABB aabb;
     public static int id = 0;
@@ -25,6 +26,7 @@ public class Ball {
         pos = p;
         velocity = v;
         color = c;
+        mass = Math.PI * getRadius() * getRadius();
 
         aabb = new AABB(0, diameter, 0, h);
         gravity = new Vec2(0, 0);
